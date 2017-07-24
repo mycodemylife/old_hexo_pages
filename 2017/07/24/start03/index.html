@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="shell脚本," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;emsp;&amp;emsp;最近做的一个项目要用到shell脚本将每个独立的jar项目启动起来，由于之前并没有接触过shell脚本，故而花费了时间将shell语法大致看了一些，并参考别人的代码，终于码出了代码！">
+<meta name="keywords" content="shell脚本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell脚本批量&#x2F;单独启动、停止、重启java独立jar程序">
+<meta property="og:url" content="http://yoursite.com/2017/07/24/start03/index.html">
+<meta property="og:site_name" content="个人--技术·生活记录网站">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;最近做的一个项目要用到shell脚本将每个独立的jar项目启动起来，由于之前并没有接触过shell脚本，故而花费了时间将shell语法大致看了一些，并参考别人的代码，终于码出了代码！">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-07-24T06:59:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shell脚本批量&#x2F;单独启动、停止、重启java独立jar程序">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;最近做的一个项目要用到shell脚本将每个独立的jar项目启动起来，由于之前并没有接触过shell脚本，故而花费了时间将shell语法大致看了一些，并参考别人的代码，终于码出了代码！">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/24/start03/"/>
+
+
+
+
+
+  <title>shell脚本批量/单独启动、停止、重启java独立jar程序 | 个人--技术·生活记录网站</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人--技术·生活记录网站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/24/start03/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="冰-雪">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/touxiang.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人--技术·生活记录网站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">shell脚本批量/单独启动、停止、重启java独立jar程序</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-24T14:10:18+08:00">
+                2017-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Shell/" itemprop="url" rel="index">
+                    <span itemprop="name">Shell</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&emsp;&emsp;最近做的一个项目要用到shell脚本将每个独立的jar项目启动起来，由于之前并没有接触过shell脚本，故而花费了时间将shell语法大致看了一些，并参考别人的代码，终于码出了代码！<br><a id="more"></a><br>以后部署起来方便多了，废话不多说，直接贴上shell脚本，有需要的朋友可以根据自己项目修改前面的程序代码数组、程序名称数组、jar包数组、jar包路径数组就行了。  </p>
+<pre><code>#!/bin/bash
+
+######################获取配置文件中的参数start######################
+jarPath=`awk -F= &apos;/jarPath/{print $2}&apos; service.properties`
+
+netlogThreadNum=`awk -F= &apos;/netlogThreadNum/{print $2}&apos; service.properties`
+
+logJar=`awk -F= &apos;/logJar/{print $2}&apos; service.properties`
+
+filterJar=`awk -F= &apos;/filterJar/{print $2}&apos; service.properties`
+
+logOrFilterLoadThreadNum=`awk -F= &apos;/logOrFilterLoadThreadNum/{print $2}&apos; service.properties`
+
+startNum=`awk -F= &apos;/startNum/{print $2}&apos; service.properties`
+
+sqlFile=`awk -F= &apos;/sqlFile/{print $2}&apos; service.properties`
+
+username=`awk -F= &apos;/username/{print $2}&apos; service.properties`
+
+password=`awk -F= &apos;/password/{print $2}&apos; service.properties`
+
+table=`awk -F= &apos;/table/{print $2}&apos; service.properties`
+
+debug=`awk -F= &apos;/debug/{print $2}&apos; service.properties`
+
+dbIp=`awk -F= &apos;/dbIp/{print $2}&apos; service.properties`
+
+dbPort=`awk -F= &apos;/dbPort/{print $2}&apos; service.properties`
+######################END######################
+
+#程序模块数组
+APPS=(insertActive importActiveResToMysql insertNetLog uploadNetLog protocolIdentification netLogFilter  loadLogCSV loadFilterCSV logOrFilterDistrubute)
+
+#程序名称数组
+NAMES=(insertActive importActiveResToMysql insertNetLog uploadNetLog protocolIdentification netLogFilter  loadLogCSV loadFilterCSV logOrFilterDistrubute)
+
+#jar包数组
+JARS=(insertActive.jar importActiveResToMysql insertNetLog.jar uploadNetLog.jar  protocolIdentification.jar netLogFilter.jar  loadLogCSV.jar loadFilterCSV.jar logOrFilterDistrubute.jar)
+
+#jar包路径数组
+PATHS=($jarPath/active/insert  $jarPath/active/go  $jarPath/netlog/insertNetLog  $jarPath/netlog/uploadNetLog  $jarPath/protocol  $jarPath/netlog/netLogFilter   $jarPath/logfilter/loadLogAndFilterCSv/log  $jarPath/logfilterloadLogAndFilterCSv/filter  $jarPath/logfilter/logOrFilterDistrubute)   
+start(){
+local APPNAME=
+local NAME=
+local CLASSNAME=
+local PROJECTDIR=
+local command=&quot;sh project.sh start&quot;
+local cmd2=&quot;$1&quot;
+local cmd2ok=0
+local cnt=0
+local okcnt=0  #服务个数
+echo &quot;*****************************开始启动服务************************************&quot;
+for(( i=0;i&lt;${#APPS[@]};i++))   # 循环启动各个模块
+do
+    APPNAME=${APPS[$i]}
+    NAME=${NAMES[$i]}
+    CLASSNAME=${JARS[$i]}
+    PROJECTDIR=${PATHS[$i]}
+
+if [ &quot;$cmd2&quot; == &quot;all&quot; ] || [ &quot;$cmd2&quot; == &quot;$APPNAME&quot; ]; then
+    cmd2ok=1
+    cnt=0
+    PID=`ps -ef |grep $(echo $CLASSNAME |awk -F/ &apos;{print $NF}&apos;) | grep -v grep | awk &apos;{print $2}&apos;`    
+    if [ -n &quot;$PID&quot; ]
+    then
+        echo &quot;$APPNAME---$NAME:正在运行中...,PID=$PID&quot;
+    else
+        cd $PROJECTDIR
+        if [ &quot;$APPNAME&quot; == &quot;loadFilterCSV&quot; ]
+        then
+                command=&quot;nohup java -jar $PROJECTDIR/$CLASSNAME $logOrFilterLoadThreadNum start &amp;&quot;
+                exec $command &gt;&gt; $PROJECTDIR/nohup.out &amp;
+
+            elif [ &quot;$APPNAME&quot; == &quot;insertActive&quot; ]
+            then
+                command=&quot;nohup java -jar  $PROJECTDIR/$CLASSNAME $sqlFile $username $password $table $debug $dbIp $dbPort start &amp;&quot;
+                exec $command &gt;&gt; $PROJECTDIR/nohup.out &amp;
+
+            elif [ &quot;$APPNAME&quot; == &quot;netLogFilter&quot; ]
+            then
+                command=&quot;nohup java -jar $PROJECTDIR/$CLASSNAME $netlogThreadNum start &amp;&quot;
+                exec $command &gt;&gt; $PROJECTDIR/nohup.out &amp;
+
+            elif [ &quot;$APPNAME&quot; == &quot;logOrFilterDistrubute&quot; ] 
+            then
+
+                if [ &quot;$logJar&quot; -eq 0 ] ;then
+                    if [ ! -d &quot;all&quot; ]; then  ##如果不存在文件夹就创建
+                        mkdir all
+
+                        command=&quot;nohup java -jar $PROJECTDIR/$CLASSNAME all all start &amp;&quot;
+                        exec $command &gt;&gt; $PROJECTDIR/all/nohup.out &amp;
+                    fi
+                else
+                    (( j=$logJar*10 ))
+                    for(( i=0;i&lt;$j;i++ ))   #循环
+                    do
+                        if [ ! -d &quot;csvLogFilter$i&quot; ]; then  ##如果不存在文件夹就创建
+                            mkdir &quot;csvLogFilter$i&quot;
+                        fi
+
+                        command=&quot;nohup java -jar $PROJECTDIR/$CLASSNAME csvLogFilter$i $i start &amp;&quot;
+                        exec $command &gt;&gt; $PROJECTDIR/csvLogFilter$i/nohup.out &amp;
+                    done
+                fi
+            elif [ &quot;$APPNAME&quot; == &quot;protocolIdentification&quot; ]
+            then
+                    command=&quot;nohup java -jar $PROJECTDIR/$CLASSNAME 2 start &amp;&quot;
+                    exec $command &gt;&gt; $PROJECTDIR/insert/nohup.out &amp;
+
+                    (( k=$startNum ))
+                    for(( i=0;i&lt;$k;i++ ))   # 循环
+                    do
+                        if [ ! -d &quot;csvProtocol$i&quot; ]; then  ##如果不存在文件夹就创建
+                            mkdir &quot;csvProtocol$i&quot;
+                        fi
+                            command=&quot;nohup java -jar $PROJECTDIR/$CLASSNAME 1 csvProtocol$i start &amp;&quot;
+                            exec $command &gt;&gt; $PROJECTDIR/csvProtocol$i/nohup.out &amp;
+                    done
+
+            elif [ &quot;$APPNAME&quot; == &quot;loadLogCSV&quot; ]
+            then
+                    command=&quot;nohup java -jar $PROJECTDIR/$CLASSNAME $logOrFilterLoadThreadNum start &amp;&quot;
+                    exec $command &gt;&gt; $PROJECTDIR/nohup.out &amp;
+
+            elif [ &quot;$APPNAME&quot; == &quot;importActiveResToMysql&quot; ]
+            then
+                nohup ./$CLASSNAME --config_dir=&quot;$jarPath/active/go/configlinux.xml&quot; &amp; &gt;&gt; $PROJECTDIR/nohup.out &amp;                        
+
+        else
+            command=&quot;nohup java -jar $PROJECTDIR/$CLASSNAME start &amp;&quot;
+            exec $command &gt;&gt; $PROJECTDIR/nohup.out &amp;
+        fi
+
+        PID=`ps -ef |grep $(echo $CLASSNAME |awk -F/ &apos;{print $NF}&apos;) | grep -v grep | awk &apos;{print $2}&apos;`    
+        cnt=0
+        while [ -z &quot;$PID&quot; ]
+        do
+            if (($cnt==60))
+            then
+                echo &quot;$APPNAME---$NAME:$cnt秒内未启动，请检查！&quot;
+            break
+            fi
+            cnt=$(($cnt+1))
+            sleep 1s
+
+            PID=`ps -ef |grep $(echo $CLASSNAME |awk -F/ &apos;{print $NF}&apos;) | grep -v grep | awk &apos;{print $2}&apos;`    
+        done
+
+        okcnt=$(($okcnt+1))
+        if [ -z &quot;$PID&quot; ] ;then
+            echo -e &quot;\033[31m $APPNAME---$NAME: 服务启动失败 \033[0m&quot;
+            okcnt=$(($okcnt-1))
+        else
+            echo &quot;$APPNAME---$NAME:服务启动成功,PID=$PID&quot;
+        fi
+    fi 
+fi     
+done
+if (($cmd2ok==0))
+then
+    echo &quot;command2: all|insertActive|importActiveResToMysql|protocolIdentification|netLogFilter|insertNetLog|uploadNetLog|loadLogCSV|loadFilterCSV|logOrFilterDistrubute|insertActive|protocolIdentification&quot; 
+else
+    echo &quot;----------------^_^-----------本次启动:$okcnt个服务----------^_^------------------&quot;
+fi
+}
+
+stop(){ 
+local APPNAME=
+local CLASSNAME=
+local PROJECTDIR=
+local command=&quot;sh project.sh stop&quot;
+local cmd2=&quot;$1&quot;
+local cmd2ok=0
+
+local okcnt=0
+echo &quot;*************************************开始停止服务************************************&quot;
+for(( i=0;i&lt;${#APPS[@]};i++))
+do
+    APPNAME=${APPS[$i]}
+    NAME=${NAMES[$i]}
+    CLASSNAME=${JARS[$i]}
+    PROJECTDIR=${PATHS[$i]}
+    if [ &quot;$cmd2&quot; == &quot;all&quot; ] || [ &quot;$cmd2&quot; == &quot;$APPNAME&quot; ]; then
+        cmd2ok=1
+
+        PID=`ps -ef |grep $(echo $CLASSNAME |awk -F/ &apos;{print $NF}&apos;) | grep -v grep | awk &apos;{print $2}&apos;`    
+
+        if [ -n &quot;$PID&quot; ]
+        then
+            echo &quot;$NAME:PID=$PID      ======&gt;准备结束&quot;
+            kill $PID
+
+            PID=`ps -ef |grep $(echo $CLASSNAME |awk -F/ &apos;{print $NF}&apos;) | grep -v grep | awk &apos;{print $2}&apos;`
+            while [ -n &quot;$PID&quot; ]
+            do
+                sleep 1s
+
+                PID=`ps -ef |grep $(echo $CLASSNAME |awk -F/ &apos;{print $NF}&apos;) | grep -v grep | awk &apos;{print $2}&apos;`
+            done
+            echo &quot;$NAME:成功结束&quot;
+            okcnt=$(($okcnt+1))
+        else
+            echo &quot;$NAME:未运行&quot;
+        fi 
+
+    fi
+done
+if (($cmd2ok==0))
+then
+    echo &quot;command2:all|netLogFilter|insertNetLog|uploadNetLog|loadLogCSV|loadFilterCSV|logOrFilterDistrubute|insertActive|protocolIdentification&quot; 
+else
+    echo &quot;--------------------------------本次共停止:$okcnt个服务---------------------------------------&quot; 
+fi
+}
+
+case &quot;$1&quot; in 
+start) 
+    start &quot;$2&quot;
+    exit 1
+    ;; 
+stop) 
+    stop &quot;$2&quot;
+    ;; 
+restart) 
+    stop &quot;$2&quot;
+    start &quot;$2&quot;
+    ;; 
+*) 
+    echo &quot;command1: start|stop|restart&quot; 
+    exit 1 
+    ;; 
+esac
+
+ |--脚本文件名称可以随意，但后续启动服务需要使用名称。下面的命令都是在脚本文件的当前位置使用。
+
+ |--配置文件和脚本文件要在同等级下
+
+ |--① 启动全部服务的方法：sh  project.sh start all
+
+    ② 单独启动方式: sh  project.sh start 单独的模块名称
+
+ |--① 关闭全部服务的方法：sh  project.sh stop all
+
+    ② 单独关闭方式: sh  project.sh stop 单独的模块名称
+
+ |--① 重启全部服务的方法：sh  project.sh restart all
+
+    ② 单独重启方式: sh  project.sh restart 单独的模块名称     
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/shell脚本/" rel="tag"># shell脚本</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/24/start02/" rel="next" title="心情不好">
+                <i class="fa fa-chevron-left"></i> 心情不好
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/touxiang.jpg"
+               alt="冰-雪" />
+          <p class="site-author-name" itemprop="name">冰-雪</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冰-雪</span>
+</div>
+<span id="busuanzi_container_page_pv">
+  本站总阅读量<span id="busuanzi_value_page_pv"></span>次
+</span>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
