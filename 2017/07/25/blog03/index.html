@@ -93,18 +93,18 @@
 
 
 
-<meta name="description" content="安装JDK           查询并卸载JDK：    [root@localhost ~]# java –version          //先查询系统的java版本          java version &amp;quot;1.6.0_18&amp;quot;            Java(TM) 2 Runtime Environment, Standard Edition (build 1.">
+<meta name="description" content="安装JDK">
 <meta name="keywords" content="jdk，mysql">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux CentOs 6下安装jdk和MySQL">
 <meta property="og:url" content="http://www.wo.icexue.top/2017/07/25/blog03/index.html">
 <meta property="og:site_name" content="个人--技术·生活记录网站">
-<meta property="og:description" content="安装JDK           查询并卸载JDK：    [root@localhost ~]# java –version          //先查询系统的java版本          java version &amp;quot;1.6.0_18&amp;quot;            Java(TM) 2 Runtime Environment, Standard Edition (build 1.">
+<meta property="og:description" content="安装JDK">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-07-25T12:31:46.000Z">
+<meta property="og:updated_time" content="2017-07-25T12:34:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux CentOs 6下安装jdk和MySQL">
-<meta name="twitter:description" content="安装JDK           查询并卸载JDK：    [root@localhost ~]# java –version          //先查询系统的java版本          java version &amp;quot;1.6.0_18&amp;quot;            Java(TM) 2 Runtime Environment, Standard Edition (build 1.">
+<meta name="twitter:description" content="安装JDK">
 
 
 
@@ -369,8 +369,7 @@
       
 
       
-        <a id="more"></a>
-<h2 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h2><!--more-->          
+        <h2 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h2><a id="more"></a>          
 <p>查询并卸载JDK：   </p>
 <pre><code>[root@localhost ~]# java –version          //先查询系统的java版本     
     java version &quot;1.6.0_18&quot;       
@@ -383,8 +382,9 @@
     OpenJDK 64-Bit Server VM (build 24.45-b08, mixed mode)               
 
 [root@localhost ~]#rpm -qa | grep jdk                
-    java-1.6.0-openjdk-1.6.0.0-1.7.b09.el5                    
-</code></pre><p>如有其他版本的JDK或者是OpenJDK，按照rpm -qa | grepjdk查询出来的相关包顺序从下往上逐个删除，使用以下命令      </p>
+    java-1.6.0-openjdk-1.6.0.0-1.7.b09.el5      
+</code></pre><!--more-->                        
+<p>如有其他版本的JDK或者是OpenJDK，按照rpm -qa | grepjdk查询出来的相关包顺序从下往上逐个删除，使用以下命令      </p>
 <pre><code>[root@localhost ~]# yum -y remove java-1.6.0-openjdk-1.6.0.0-1.7.b09.el5     
     Setting up Remove Process          
     Resolving Dependencies......                
