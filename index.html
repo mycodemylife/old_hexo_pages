@@ -367,7 +367,7 @@
           <p>今天编写HTML时突然想起之前使用的sublime text，于是乎又开始捡起来学习一下，这个东西用来写HTML还是很强大的，至于软件可以上网去搜索，网上一大把。这里主要提示一下，安装一个插件emmt,这个玩意对HTML的格式化啊，快捷键啊，提示啊，都特别好使。<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/25/blog02/#далее" rel="contents">
+            <a class="btn" href="/2017/07/25/blog02/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -513,100 +513,14 @@
 
       
         
-          
-            <h2 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h2><p>查询并卸载JDK：   </p>
-<pre><code>[root@localhost ~]# java –version          //先查询系统的java版本     
-    java version &quot;1.6.0_18&quot;       
-    Java(TM) 2 Runtime Environment, Standard Edition (build 1.6.0_18-b02)        
-    Java HotSpot(TM) Client VM (build 1.6.0_18-b02, mixed mode, sharing)            
-    或者   
-
-    java version &quot;1.7.0_45&quot;              
-    OpenJDK Runtime Environment (rhel-2.4.3.3.el6-x86_64 u45-b15)               
-    OpenJDK 64-Bit Server VM (build 24.45-b08, mixed mode)               
-
-[root@localhost ~]#rpm -qa | grep jdk                
-    java-1.6.0-openjdk-1.6.0.0-1.7.b09.el5                    
-</code></pre><p>如有其他版本的JDK或者是OpenJDK，按照rpm -qa | grepjdk查询出来的相关包顺序从下往上逐个删除，使用以下命令      </p>
-<pre><code>[root@localhost ~]# yum -y remove java-1.6.0-openjdk-1.6.0.0-1.7.b09.el5     
-    Setting up Remove Process          
-    Resolving Dependencies......                
-    Removed: java-1.6.0-openjdk-1.6.0.0-1.7.b09.el5                    
-    ...... (开始卸载)                    
-    Complete!(卸载完毕)                    
-[root@localhost ~]# rpm -qa | grep gcj                  
-    libgcj-4.1.2-48.el5                      
-    java-1.4.2-gcj-compat-1.4.2.0-40jpp.115                      
-[root@localhost ~]# yum -y remove java-1.4.2-gcj-compat-1.4.2.0-40jpp.115                     
-[root@localhost ~]# yum -y remove libgcj-4.1.2-42.el5                          
-</code></pre><p>这样卸载完成毕后，再查询系统的Java版本： </p>
-<pre><code>[root@localhost ~]# java -version             
-    bash: java: command not found              
-</code></pre><p>出现以上内容表明说明卸载成功!!!        </p>
-<h2 id="上传JDK文件"><a href="#上传JDK文件" class="headerlink" title="上传JDK文件"></a>上传JDK文件</h2><p>将jdk-6u35-linux-i586-rpm.bin上传到服务器的根目录下<br>给jdk赋予读写的权限，命令为：chmod -R 755 jdk-6u35-linux-i586-rpm.bin<br>注：64位系统请安装64位相关软件包，复制命令时请确认版本号。                       </p>
-<pre><code>安装JDK，命令为：                           
-sh /jdk-6u35-linux-i586-rpm.bin                     
-修改Java环境变量                 
-vi /etc/profile     
-</code></pre><p>在该文件的最后添加以下三行代码：（按键盘上的【i】键，进入编辑模式） </p>
-<pre><code>export JAVA_HOME=/usr/java/jdk1.6.0_35              
-export PATH=$JAVA_HOME/bin:$PATH                    
-export CLASSPATH=.:/usr/java/jdk1.6.0_35/lib/tools.jar:$CLASSPATH                
-</code></pre><p>添加之后，按键盘上的【ESC】键，在服务器上输入【:wq!】即可保存退出!!!<br>也可以直接修改服务器上该文件，保存即可。                   </p>
-<h2 id="测试安装是否完成"><a href="#测试安装是否完成" class="headerlink" title="测试安装是否完成"></a>测试安装是否完成</h2><p>执行命令java –version，若出现下列内容则代表安装完成。           </p>
-<pre><code>java version &quot;1.6.0_35&quot;
-Java(TM) SE Runtime Environment (build 1.6.0_35-b10)
-Java HotSpot(TM) Server VM (build 20.10-b01, mixed mode)
-</code></pre><h2 id="安装数据库Mysql-5-6-26"><a href="#安装数据库Mysql-5-6-26" class="headerlink" title="安装数据库Mysql 5.6.26"></a>安装数据库Mysql 5.6.26</h2><p>查询并卸载其他版本：       </p>
-<pre><code>[root@localhost ~]# rpm -qa|grep -i mysql            
-</code></pre><p>如有其他版本的MySQL，按照查询出来的相关包顺序从下往上逐个删除，使用以下命令：           </p>
-<pre><code>[root@localhost ~]# rpm -e 查询出来的相关包    //rpm卸载MySQL            
-</code></pre><p>注意事项：<br>如果出现包依赖，使用 –nodeps参数强制删除。<br>（如：[root@localhost ~]# rpm -e MySQL-server-5.6.26-1.el6.x86_64 –nodeps）                           </p>
-<h2 id="上传Mysql相关RPM包"><a href="#上传Mysql相关RPM包" class="headerlink" title="上传Mysql相关RPM包"></a>上传Mysql相关RPM包</h2><p>将MySQL-server-5.6.26-1.el6.x86_64.rpm和MySQL-client-5.6.26-1.el6.x86_64.rpm上传至/mnt/路径下                  </p>
-<pre><code>[root@localhost ~]# cd /mnt/     //进入mnt目录                         
-安装依赖环境：                  
-
-yum install perl                  
-yum install numactl                   
-安装MYSQL：                      
-[root@localhost mnt]# rpm -ivh MySQL-client-5.6.26-1.el6.x86_64.rpm               
-[root@localhost mnt]# rpm -ivh MySQL-server-5.6.26-1.el6.x86_64.rpm               
-如果报错：            
-
-则执行：                
-[root@localhost mnt]# rpm -ivh MySQL-client-5.6.26-1.el6.x86_64.rpm --nodeps             
-[root@localhost mnt]# rpm -ivh MySQL-server-5.6.26-1.el6.x86_64.rpm --nodeps           
-启动Mysql服务：            
-[root@localhost ~]# service mysql start                   
-
-[root@localhost ~]# netstat -anlt      //查看3306端口是否已经启动                 
-</code></pre><p>以上表明Mysql服务已启动<br>查看Mysql版本：                    </p>
-<pre><code>[root@localhost ~]# mysql -V               
-</code></pre><p>进入Mysql数据库<br>由于Mysql5.6.26安装时默认给root用户设置了随机密码，因此需要使用密码登陆数据库，密码存储在/root/.mysql_secret 文件中，打开文件最后一行显示的是最新的登陆密码                     </p>
-<pre><code>[root@localhost ~]# cat /root/.mysql_secret                       
-
-[root@localhost ~]# mysql -u root –p      //使用root登陆Mysql                       
-Enter password:                         //输入密码                   
-
-mysql&gt;//在Mysql中执行以下命令             
-mysql&gt; set PASSWORD=PASSWORD(&apos; 123456 &apos;);                 
-mysql&gt; update mysql.user set password=password(&quot;XXXXXXX&quot;) where User=&quot;root&quot;;         
-mysql&gt; grant all PRIVILEGES on *.* to root@&apos;%&apos; identified by &apos;XXXXXXX&apos;;               
-mysql&gt; flush privileges;              
-mysql&gt; quit;             
-</code></pre><p>6、将所有上传的文件或文件夹都设置为777，或有可执行的权限；<br>命令为：chmod -R 777文件路径（例如chmod -R 777 /root/*）</p>
-<p>7、如果是更新ISMS系统，需要删除或清除如下目录,执行命令为：     </p>
-<pre><code>rm -rf /root/idc           
-rm -rf /var/lib/mysql/importData/*              
-  清除tomcat 缓存文件 /apache-tomcat-7.0.52_isms/work/*              
-清除tomcat 日志文件 /apache-tomcat-7.0.52_isms /logs/*                    
-若第一次部署系统可跳过此步骤。                     
-</code></pre><p>8、MySQL优化设置注意事项<br>a、登陆mysql，使用命令show variables like ‘%dir%’;查看Mysql的socket路径              </p>
-<p>b、将服务器上的原始配置文件/etc/my.cnf备份到本地 ，然后将安装包中的文件替换到该路径下；                   （若etc下没有my.cnf文件，则直接将安装包中的上传至etc路径下即可）<br>c、替换后打开替换后的my.cnf文件，然后更改socket路径，将其更改为当前MySQL的路径，如下图；       </p>
-<p>c、将Mysql服务器的socket路径下的log日志删除，如下图；     </p>
-<p>d、数据库优化完毕后，重启数据库服务：service mysql restart      </p>
-
-          
+          <h2 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h2>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/25/blog03/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -896,7 +810,7 @@ rm -rf /var/lib/mysql/importData/*
           <p>&emsp;&emsp;最近做的一个项目要用到shell脚本将每个独立的jar项目启动起来，由于之前并没有接触过shell脚本，故而花费了时间将shell语法大致看了一些，并参考别人的代码，终于码出了代码！<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/24/start03/#далее" rel="contents">
+            <a class="btn" href="/2017/07/24/start03/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1045,7 +959,7 @@ rm -rf /var/lib/mysql/importData/*
           <p>java.lang.ClassNotFoundException:org.apache.juli.logging.LogFactory<br>  解决方法：<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/24/blog01/#далее" rel="contents">
+            <a class="btn" href="/2017/07/24/blog01/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1200,7 +1114,7 @@ rm -rf /var/lib/mysql/importData/*
 </code></pre>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/21/start01/#далее" rel="contents">
+            <a class="btn" href="/2017/07/21/start01/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
