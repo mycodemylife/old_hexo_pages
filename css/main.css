@@ -1521,6 +1521,9 @@ pre .javascript .function {
 .fancybox-close:hover {
   border: none;
 }
+.post-wordcount {
+  display: inline-block;
+}
 .sidebar {
   position: fixed;
   right: 0;
@@ -1678,7 +1681,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff521d;
+  background: #3053f6;
 }
 .links-of-blogroll {
   font-size: 13px;
