@@ -1486,6 +1486,12 @@ pre .javascript .function {
   right: 0;
   left: auto;
 }
+.post-nav-next {
+  text-align: left;
+}
+.post-nav-prev {
+  text-align: right;
+}
 .posts-expand .post-eof {
   display: block;
   margin: 80px auto 60px;
@@ -1796,7 +1802,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #d9ff9c;
+  background: #ff1cd6;
 }
 .links-of-blogroll {
   font-size: 13px;
