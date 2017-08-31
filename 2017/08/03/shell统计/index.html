@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="个人--技术·生活记录网站">
 <meta property="og:description" content="由于项目需要前面写完了shell脚本的程序启动，现在的需求是在前一个进程的基础上再运行10个等进程，那就需要进行进程数量的统计了。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-03T03:16:08.000Z">
+<meta property="og:updated_time" content="2017-08-31T10:37:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="根据Linux中的PID用shell脚本来统计某一个进程的总数量">
 <meta name="twitter:description" content="由于项目需要前面写完了shell脚本的程序启动，现在的需求是在前一个进程的基础上再运行10个等进程，那就需要进行进程数量的统计了。">
@@ -405,7 +405,7 @@
       
 
       
-        <p>由于项目需要前面写完了shell脚本的程序启动，现在的需求是在前一个进程的基础上再运行10个等进程，那就需要进行进程数量的统计了。<br><a id="more"></a><br>    取进程的PID<br>        PID=<code>ps -ef |grep $(echo $CLASSNAME |awk -F/ &#39;{print $NF}&#39;) | grep -v grep | awk &#39;{print $2}&#39;</code><br>        其中CLASSNAME是程序中设定的变量，可以根据需求进行修改<br>    统计<br>     统计进程数量<br>            list=<code>ps -ef|grep logOrFilterDistrubute.jar|grep -v grep|awk &#39;{print $2}&#39;</code><br>            num=0<br>            for i in $list<br>            do<br>                 num=$[$num+1]<br>            done<br>            echo $num</p>
+        <p>　　由于项目需要前面写完了shell脚本的程序启动，现在的需求是在前一个进程的基础上再运行10个等进程，那就需要进行进程数量的统计了。<br><a id="more"></a><br>    取进程的PID<br>        PID=<code>ps -ef |grep $(echo $CLASSNAME |awk -F/ &#39;{print $NF}&#39;) | grep -v grep | awk &#39;{print $2}&#39;</code><br>        其中CLASSNAME是程序中设定的变量，可以根据需求进行修改<br>    统计<br>     统计进程数量<br>            list=<code>ps -ef|grep logOrFilterDistrubute.jar|grep -v grep|awk &#39;{print $2}&#39;</code><br>            num=0<br>            for i in $list<br>            do<br>                 num=$[$num+1]<br>            done<br>            echo $num</p>
 <p>——————–结束————————–</p>
 
       
